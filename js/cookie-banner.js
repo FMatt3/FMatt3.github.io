@@ -14,7 +14,7 @@ let cookiePreferences = {
 
 document.addEventListener('DOMContentLoaded', function() {
     loadPreferences();
-    
+
     // Zeige Banner nur, wenn noch keine Einstellung vorhanden
     const saved = localStorage.getItem(COOKIE_PREF_KEY);
     if (!saved) {
@@ -105,16 +105,16 @@ function showBanner() {
     const banner = document.getElementById('cookieBanner');
     if (banner) {
         banner.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; 
+        document.body.style.overflow = 'hidden';
         // Stelle die UI auf die aktuell gespeicherten Präferenzen ein
-        loadPreferences(); 
+        loadPreferences();
     }
 }
 
 function closeBanner() {
     const banner = document.getElementById('cookieBanner');
     const settingsBtn = document.getElementById('cookieSettingsBtn');
-    
+
     if (banner) {
         banner.style.display = 'none';
     }
@@ -124,33 +124,15 @@ function closeBanner() {
     }
 }
 
-function toggleDetails(id) {
-    const element = document.getElementById(id);
-    // Sicherstellen, dass das Element existiert, bevor darauf zugegriffen wird
-    if (!element) return;
-    
-    // 'previousElementSibling' ist der <button> selbst, wir brauchen den Header
-    const header = element.parentElement.querySelector('.cookie-category-header');
-    const icon = header.nextElementSibling.querySelector('i'); // Den Button über das nächste Geschwister finden
-    
-    if (element.style.display === 'none') {
-        element.style.display = 'block';
-        if (icon) icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
-    } else {
-        element.style.display = 'none';
-        if (icon) icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
-    }
-}
-
 
 function showNotification(message) {
     const notification = document.createElement('div');
     notification.className = 'cookie-notification';
-    notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    notification.innerHTML = `<i class="bi bi-check-circle"></i> ${message}`;
     document.body.appendChild(notification);
-    
+
     setTimeout(() => { notification.classList.add('show'); }, 10);
-    setTimeout(() => { 
+    setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => { notification.remove(); }, 300);
     }, 3000);
@@ -163,12 +145,12 @@ function showNotification(message) {
 function savePreferences() {
     cookiePreferences.analytics = document.getElementById('analyticsCookies').checked;
     cookiePreferences.marketing = document.getElementById('marketingCookies').checked;
-    
+
     localStorage.setItem(COOKIE_PREF_KEY, JSON.stringify(cookiePreferences));
     localStorage.setItem(COOKIE_DATE_KEY, new Date().toISOString());
-    
+
     applyTrackingSettings(cookiePreferences);
-    
+
     closeBanner();
     showNotification('Ihre Cookie-Einstellungen wurden gespeichert!');
 }
